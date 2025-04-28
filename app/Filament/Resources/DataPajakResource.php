@@ -13,7 +13,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Illuminate\Database\Eloquent\Model;
+use Filament\Navigation\NavigationItem;
 class DataPajakResource extends Resource
 {
     protected static ?string $model = DataPajak::class;
@@ -81,6 +82,20 @@ class DataPajakResource extends Resource
                 ]),
             ]);
     }
+    public static function getNavigationItems(): array
+{
+    $items = [];
+    // Check if the user has permission to view data pajak
+    if (auth()->user()->can('view_tax_data')) {  // Replace with actual permission logic
+        $items[] = NavigationItem::make()
+            ->label('Data Pajak')
+            ->url(route('filament.admin.resources.data-pajaks.index')) // Correct route name for DataPajak
+            ->icon('heroicon-o-document-text');
+    }
+
+    return $items;
+}
+
 
     // Define Relationships if needed
     public static function getRelations(): array
